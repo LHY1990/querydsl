@@ -1,6 +1,8 @@
 plugins {
 	id 'org.springframework.boot' version '2.7.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	// queryDsl 세팅 step 1/4
+	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 	id 'java'
 	id 'war'
 }
@@ -24,12 +26,44 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
+	// querydsl step 2/4 의존성 주입 버전은 확인
+	implementation "com.querydsl:querydsl-jpa:5.0.0"
+	implementation "com.querydsl:querydsl-apt:5.0.0"
+
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+
+
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+
+// querydsl step3/4
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+sourceSets {
+	main.java.srcDir querydslDir
+}
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+configurations {
+//	<gradle 5버전 이후에 여기부분 추가
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+//	gradle 5버전 이후에 여기부분 추가>
+	querydsl.extendsFrom compileClasspath
+}
+// querydsl step 3 end
+// 4/4 gradle 우측 의존성 탭 - other - compileQuerydsl 따닥!
