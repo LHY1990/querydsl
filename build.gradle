@@ -66,4 +66,6 @@ configurations {
 	querydsl.extendsFrom compileClasspath
 }
 // querydsl step 3 end
-// 4/4 gradle 우측 의존성 탭 - other - compileQuerydsl 따닥!
+// 4/4 gradle 우측 의존성 탭 Tasks - other - compileQuerydsl 따닥!
+// 이때 build파일에 만드는 경우엔 git이 무시하지만.
+// 다른 경로로 가는 경우엔 git ignore처리를 해야한다.
