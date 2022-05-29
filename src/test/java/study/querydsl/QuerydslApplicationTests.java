@@ -6,6 +6,7 @@ import entity.QHello;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -21,6 +22,7 @@ class QuerydslApplicationTests {
 	@Test
 	void contextLoads() {
 		Hello hello = new Hello();
+		hello.setName("temp");
 		em.persist(hello);
 
 		JPAQueryFactory query = new JPAQueryFactory(em);
@@ -30,7 +32,7 @@ class QuerydslApplicationTests {
 							.fetchOne();
 
 
-		
+
 	}
 
 }
